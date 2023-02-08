@@ -1,0 +1,12 @@
+<ul>
+	{% for num in [1,2,3,4] %}
+		{% if currentPage != num %}
+			<li class="list-unstyled mb-2">
+				<a href='{{path('page',{numero:num})}}' class="btn btn-outline-primary btn-sm">
+					page
+					{{ num }}
+				</a>
+			</li>
+		{% endif %}
+	{% endfor %}
+</ul>

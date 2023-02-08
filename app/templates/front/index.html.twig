@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Liste des livres
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h2>Il y a
+			{{ nombreLivre }}
+			livre(s)</h2>
+		<table class="table-striped table-hover table-bordered">
+			<thead>
+				<tr>
+					<th class="col">id</th>
+					<th class="col">titre</th>
+					<th class="col">auteur</th>
+					<th class="col">éditeur</th>
+					<th class="col">categorie</th>
+					<th class="col">resume</th>
+					<th class="col">date parution</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for livre in livres %}
+					<tr>
+						<th>{{ livre.id }}</th>
+						<th>{{ livre.titre }}</th>
+						<th>{{ livre.auteur }}</th>
+						<th>{{ livre.editeur }}</th>
+						<th>{{ livre.categorie }}</th>
+						<th>{{ livre.resume | myExerpt(100, '---') }}</th>
+						<th>{{ livre.dateFormatParution }}</th>
+						<th>{{ livre.dateParution | date("d/m/Y") }}</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

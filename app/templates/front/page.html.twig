@@ -1,27 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}
-	Page n°
-	{{ numero }}
-{% endblock %}
-
+{% block title %} Page N° {{ numero }}{% endblock  %}
 {% block body %}
-
-	<h2>
-		<a href="{{ path('accueil') }}" 
-		class="btn btn-sm btn-primary float-end">Retour</a>
-		{{ titre }} pour la page {{ numero }}
-	</h2>
-	<div class='row'>
-		<div class="col-3">
-		{# Intégration du menu #}
-			{{ include('front/_menu.html.twig', {currentPage: numero}) }}
-		</div>
-		<div class="col-9">
-			<p>
-				sdf zfuh iugnfvnohp fpu fb c pbfe ivb ofiebsvfvpfe hepfsj b
-			</p>
-		</div>
-	</div>
+    <h2>
+        <a href="{{ path('accueil') }}"
+           class="btn btn-sm btn-success float-end">Retour</a>
+        {{ titre }} pour la page {{ numero }}
+    </h2>
+    <div class="row">
+        <div class="col-3">
+            <!-- integration du menu -->
+            {{ include('front/_menu.html.twig', {currentPage: numero}) }}
+        </div>
+        <div class="col-9">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Amet architecto aspernatur dolorum eos facilis fugit harum iure iusto,
+                nam necessitatibus nesciunt praesentium quam quia quibusdam sequi similique
+                totam veritatis vitae!
+            </p>
+        </div>
+    </div>
 
 {% endblock %}

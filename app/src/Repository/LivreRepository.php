@@ -39,6 +39,21 @@ class LivreRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllOptimize(array $criteria = [], $limit = null, $offset = null): array
+    {
+        $db = $this->createQueryBuilder('l')
+            ->leftJoin('l.auteur', 'auteur')
+            ->addSelect('auteur')
+
+            ->leftJoin('l.categorie', 'categorie')
+            ->addSelect('categorie')
+
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+            return $db->getQuery()->getResult(); // On vas retourné un tableau de valeur (objets).
+    }
+
 //    /**
 //     * @return Livre[] Returns an array of Livre objects
 //     */
@@ -50,8 +65,7 @@ class LivreRepository extends ServiceEntityRepository
 //            ->orderBy('l.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
-//            ->getResult()
-//        ;
+//            ->getResult();
 //    }
 
 //    public function findOneBySomeField($value): ?Livre
@@ -60,7 +74,6 @@ class LivreRepository extends ServiceEntityRepository
 //            ->andWhere('l.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
+//            ->getOneOrNullResult();
 //    }
 }

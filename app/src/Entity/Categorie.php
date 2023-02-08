@@ -15,12 +15,12 @@ class Categorie
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 100)]
     private ?string $label = null;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Livre::class)]
     private Collection $livres;
-    
+
     public function __construct()
     {
         $this->livres = new ArrayCollection();
@@ -35,6 +35,7 @@ class Categorie
     {
         return $this->label;
     }
+
     public function setLabel(string $label): self
     {
         $this->label = $label;
@@ -50,25 +51,25 @@ class Categorie
         return $this->livres;
     }
 
-    // public function addLivre(Livre $livre): self
-    // {
-    //     if (!$this->livres->contains($livre)) {
-    //         $this->livres->add($livre);
-    //         $livre->setCategorie($this);
-    //     }
+    public function addLivre(Livre $livre): self
+    {
+        if (!$this->livres->contains($livre)) {
+            $this->livres->add($livre);
+            $livre->setCategorie($this);
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
-    // public function removeLivre(Livre $livre): self
-    // {
-    //     if ($this->livres->removeElement($livre)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($livre->getCategorie() === $this) {
-    //             $livre->setCategorie(null);
-    //         }
-    //     }
+    public function removeLivre(Livre $livre): self
+    {
+        if ($this->livres->removeElement($livre)) {
+            // set the owning side to null (unless already changed)
+            if ($livre->getCategorie() === $this) {
+                $livre->setCategorie(null);
+            }
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 }

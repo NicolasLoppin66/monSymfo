@@ -4,7 +4,7 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-# Ma première route
-# app_home:
-#     path: home
-#     controller: App\Controller\HomeController::bienvenue
+# ma première route
+#app_home:
+#    path: /home
+#    controller: App\Controller\HomeController::bienvenue

@@ -8,65 +8,67 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class HomeController extends AbstractController
 {
-    private string $titre = 'un titre';
+    private string $titre = "un titre";
 
     #[Route('/', name: 'index')]
     public function index(LivreRepository $livreRepository)
     {
-        return $this->render('front/index.html.twig', [
-            'livres' => $livreRepository->findAll(),
-            'nombreLivre' => $livreRepository->count([])
-            // 'nombreLivre' => count($livreRepository->findAll())
+        return $this->render('front/index.html.twig',[
+            'livres' => $livreRepository->findAllOptimize(),
+            // 'nombreLivre' => $livreRepository->count([])
+           // 'nombreLivre' => count($livreRepository->findAll())
         ]);
     }
 
-    #[Route('/home', name: 'accueil', methods: ['GET'])]
+
+
+    #[Route('/home', name: "accueil", methods: ['GET'])]
     public function bienvenue()
     {
-        $titre = "Bienvenue sur symfony";
+        $titre = "Bienvenue sur Symfony";
 
         return $this->render(
-            "front/home.html.twig",
-            [
+            "front/home.html.twig",[
                 'titre' => $titre
             ]
         );
     }
 
     #[Route('/page/{numero}', name: 'page',
-    requirements: ['numero' => '\d+'],
-    methods: ['GET', 'POST'],
-    condition: "params['numero'] < 20",
-    )]
-    public function page(string $numero): Response
+        requirements: ['numero' => '\d+'],
+        methods: ['GET', 'POST'],
+        condition: "params['numero'] < 20")]
+    public function page(string $numero) : Response
     {
-        return $this->render(
-            "front/page.html.twig",
-            [
-                'titre' => $this->titre,
+        return $this->render("front/page.html.twig", [
+            "titre" => $this->titre,
                 'numero' => $numero
             ]
+
         );
+
     }
 
-    #[Route('/listArticle',
-    name: 'articles',
-    methods: ['GET'],
-    )]
+    #[Route("/listArticle", name: 'articles', methods: ["GET"])]
     public function listArticles()
     {
         $articles = [
-            ['titre' => 'titre article 1', 'resume' => 'Ceci est le resumer de l\'article 1'],
-            ['titre' => 'titre article 2', 'resume' => 'Ceci est le resumer de l\'article 2'],
-            ['titre' => 'titre article 3', 'resume' => 'Ceci est le resumer de l\'article 3'],
+            ['titre'=>'titre article 1', 'resume'=> "Ceci est le résumé de l'artice 1"],
+            ['titre'=>'titre article 2', 'resume'=> "Ceci est le résumé de l'artice 2"],
+            ['titre'=>'titre article 3', 'resume'=> "Ceci est le résumé de l'artice 3"],
         ];
 
-        $livres = new Livre();
+        $livre = new Livre();
 
-        return $this->render('front/_listArticle.html.twig', [
-            'articles' => $articles
+
+
+        return $this->render("front/_listArticle.html.twig", [
+            'articles' => $articles,
         ]);
     }
+
+
 }

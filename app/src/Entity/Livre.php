@@ -28,44 +28,56 @@ class Livre
     #[ORM\Column(length: 150)]
     private string $editeur;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Categorie $categorie = null;
+
 
     #[ORM\ManyToMany(targetEntity: Auteur::class, inversedBy: 'livres')]
     private Collection $auteur;
+
+    #[ORM\ManyToOne(inversedBy: 'livres')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $categorie = null;
+
     public function __construct()
     {
         $this->auteur = new ArrayCollection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getTitre(): ?string
     {
         return $this->titre;
     }
+
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
 
         return $this;
     }
+
+
+
     public function getDateParution(): ?\DateTimeInterface
     {
         return $this->dateParution;
     }
+
     public function setDateParution(\DateTimeInterface $dateParution): self
     {
         $this->dateParution = $dateParution;
 
         return $this;
     }
+
     public function getResume(): ?string
     {
         return $this->resume;
     }
+
     public function setResume(string $resume): self
     {
         $this->resume = $resume;
@@ -88,23 +100,16 @@ class Livre
     {
         $this->editeur = $editeur;
 
-        return $this;
+        return  $this;
     }
+
     public function dateformatParu(): string
     {
         $dateFormat = $this->getDateParution()->format('d/m/Y');
         return $dateFormat;
     }
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-    public function setCategorie(Categorie $categorie): self
-    {
-        $this->categorie = $categorie;
 
-        return $this;
-    }
+
 
     /**
      * @return Collection<int, Auteur>
@@ -113,6 +118,7 @@ class Livre
     {
         return $this->auteur;
     }
+
     public function addAuteur(Auteur $auteur): self
     {
         if (!$this->auteur->contains($auteur)) {
@@ -121,10 +127,27 @@ class Livre
 
         return $this;
     }
+
     public function removeAuteur(Auteur $auteur): self
     {
         $this->auteur->removeElement($auteur);
 
         return $this;
     }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+
+
+
 }

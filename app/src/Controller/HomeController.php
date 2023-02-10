@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Entity\Livre;
+use App\Form\ContactType;
+use App\Form\LivreType;
+use App\Repository\ContactRepository;
 use App\Repository\LivreRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,11 +22,44 @@ class HomeController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(LivreRepository $livreRepository)
     {
+        //dump($livreRepository->findAll());
         return $this->render('front/index.html.twig',[
-            'livres' => $livreRepository->findAllOptimize(),
-            // 'nombreLivre' => $livreRepository->count([])
+            'livres' => $livreRepository->findAllOptimise(),
+          // 'nombreLivre' => $livreRepository->count([])
            // 'nombreLivre' => count($livreRepository->findAll())
         ]);
+    }
+
+    #[Route('/filter/{filtering}', name: "filter", methods: ["GET"])]
+    public function filter(string $filtering, LivreRepository $livreRepository)
+    {
+        $livres = [];
+        switch ($filtering){
+            case 'all':
+                $livres = $livreRepository->findAllOptimise();
+                break;
+            case 'down':
+                $livres = $livreRepository->findOptimiseDownOrUp();
+                break;
+            case 'up':
+                $livres = $livreRepository->findOptimiseDownOrUp('ASC');
+                break;
+            case 'lastfive':
+                $livres = $livreRepository->findOptimiseLastFive();
+                break;
+
+        }
+
+        return $this->json(
+            // décla du tableau qui sera jsonencoder
+            [
+                'html' => $this->renderView('front/_listLivre.html.twig', ['livres' => $livres])
+            ]
+        );
+
+//        return $this->render("front/index.html.twig",[
+//            'livres' => $livres
+//        ]);
     }
 
 
@@ -70,5 +109,62 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route('/contact', name: 'contact')]
+    public function contact(Request $request, ManagerRegistry $manager) 
+    {
+        // $formulaire = $this->createFormBuilder() // Construction du formulaire
+        // ->add('nom', TextType::class)
+        // ->add('email', EmailType::class)
+        // ->add('message', TextAreaType::class)
+        // ->add('Envoyer', SubmitType::class)
+        // ->getForm();
 
+        $formulaire = $this->createForm(ContactType::class); // Création du formulaire
+        $formulaire->handleRequest($request); // Écoute du formulaire
+
+        if ($formulaire->isSubmitted() && $formulaire->isValid()) {
+            // dump($formulaire->getData());
+            $entityManager = $manager->getManager();
+            $entityManager->persist($formulaire->getData());
+            $entityManager->flush();
+            return $this->redirectToRoute('msg');
+        }
+
+        return $this->render('front/_formulaire.html.twig', [
+            'form' => $formulaire,
+        ]);
+    }
+
+    #[Route('/msgList', name: 'msg')]
+    public function messageList(ContactRepository $contactRepo)
+    {
+        return $this->render('front/messageList.html.twig', [
+            'message' => $contactRepo->findAll(),
+        ]);
+    }
+
+    #[Route('/livreForm', name: 'addLivre')]
+    public function livreForm(Request $request, ManagerRegistry $managerRegistry)
+    {
+        $lForm = $this->createForm(LivreType::class);
+
+        $lForm->handleRequest($request);
+
+        if ($lForm->isSubmitted() && $lForm->isValid()) {
+            $em = $managerRegistry->getManager();
+            $em->persist($lForm->getData());
+            $em->flush();
+            return $this->redirectToRoute('index');
+        }
+
+        return $this->render('front/forms/livreForm.html.twig', [
+            'lForm' => $lForm
+        ]);
+    }
+
+    #[Route('/login', 'login')]
+    public function login()
+    {
+        return $this->render('front/forms/login.html.twig', []);
+    }
 }

@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AuteurRepository::class)]
+#[UniqueEntity(fields: ['nom', 'prenom'], errorPath: 'nom', message: "Cet auteur existe déja.")]
 class Auteur
 {
     #[ORM\Id]
@@ -114,5 +116,10 @@ class Auteur
         }
 
         return $this;
+    }
+
+    public function getFullName()
+    {
+        return $this->getNom().''. $this->getPrenom();
     }
 }

@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Formulaire de livre
+{% endblock %}
+
+{% block body %}
+    {{ form_start(lForm) }}
+    {{ form_rest(lForm) }}
+    {{ form_end(lForm) }}
+{% endblock %}

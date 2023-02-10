@@ -4,9 +4,9 @@ services:
 
 # déclaration du container de base de données
   base:
-    container_name: mabase
+    container_name: mybase
     image: mariadb:latest
-    user: '501:20'
+    # user: ''
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:

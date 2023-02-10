@@ -39,6 +39,12 @@ class AuteurRepository extends ServiceEntityRepository
         }
     }
 
+    public function orderByName($direction)
+    {
+        return $this->createQueryBuilder('a')
+        ->orderBy('a.nom', $direction);
+    }
+
 //    /**
 //     * @return Auteur[] Returns an array of Auteur objects
 //     */

@@ -39,19 +39,52 @@ class LivreRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllOptimize(array $criteria = [], $limit = null, $offset = null): array
+
+    public function findAllOptimise(array $criteria = [], $limit = null,
+                                        $offset = null) : array
     {
-        $db = $this->createQueryBuilder('l')
-            ->leftJoin('l.auteur', 'auteur')
+//        $db = $this->createQueryBuilder('l')
+//            ->leftJoin("l.auteur", 'auteur')
+//            ->addSelect('auteur')
+//            ->leftJoin('l.categorie', 'categorie')
+//            ->addSelect('categorie')
+//            ->setFirstResult($offset)
+//            ->setMaxResults($limit);
+        $db = $this->findOptimise()
+        ->orderBy('l.id', 'desc')
+        ->setFirstResult($offset)
+        ->setMaxResults($limit);
+        return $db->getQuery()->getResult(); // retourner un tableau de valeur (objets)
+    }
+
+    public function findOptimiseDownOrUp($direction = 'down')
+    {
+        $db = $this->findOptimise();
+        if ($direction == 'down'){
+            $db->orderBy('l.dateParution', 'DESC');
+        } else {
+            $db->orderBy('l.dateParution', 'ASC');
+        }
+        return $db->getQuery()->getResult();
+    }
+
+    public function findOptimiseLastFive()
+    {
+        $db = $this->findOptimise();
+        $db->orderBy('l.dateParution', 'DESC')
+            ->groupBy('l.id')
+            ->setMaxResults(5);
+        return $db->getQuery()->getResult();
+    }
+
+    public function findOptimise()
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin("l.auteur", 'auteur')
             ->addSelect('auteur')
-
             ->leftJoin('l.categorie', 'categorie')
-            ->addSelect('categorie')
+            ->addSelect('categorie');
 
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-            return $db->getQuery()->getResult(); // On vas retourné un tableau de valeur (objets).
     }
 
 //    /**
@@ -65,7 +98,8 @@ class LivreRepository extends ServiceEntityRepository
 //            ->orderBy('l.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
-//            ->getResult();
+//            ->getResult()
+//        ;
 //    }
 
 //    public function findOneBySomeField($value): ?Livre
@@ -74,6 +108,7 @@ class LivreRepository extends ServiceEntityRepository
 //            ->andWhere('l.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
-//            ->getOneOrNullResult();
+//            ->getOneOrNullResult()
+//        ;
 //    }
 }

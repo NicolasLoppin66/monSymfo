@@ -4,26 +4,21 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
+	<div class="container" id="corps">
 		<h2>il y a
-			{{ livres | length }}
-			livre{% if livres > 1 %}s{% endif %}
-		</h2>
-		{# <table class="table-striped table-hover table-bordered"> #}
-		{# <thead>
-														                <tr>
-														                    <th class="col">id</th>
-														                    <th class="col">titre</th>
-														                    <th class="col">auteur</th>
-														                    <th class="col">editeur</th>
-														                    <th class="col">categorie</th>
-														                    <th class="col">resume</th>
-														                    <th class="col">date parution</th>
-														                </tr>
-														            </thead> #}
-		{# <tbody> #}
-			<div class="row d-flex flex-row justify-content-center mb-2"> {% for livre in livres %}
-				<div class="card mb-2 d-inline-block me-2" style="width: 30%">
+			{{ livres|length }}
+			livre(s)</h2>
+
+		<div class="row d-flex flex-row justify-content-evenly mb-2 mt-2">
+			<a href="#all" class="btn btn-sm btn-success inline-block btnClick" id="all" style="width: 20%">Tous</a>
+			<a href="#down" class="btn btn-sm btn-success inline-block btnClick" id="down" style="width: 20%">Descendant</a>
+			<a href="#up" class="btn btn-sm btn-success inline-block btnClick" id="up" style="width: 20%">Ascendant</a>
+			<a href="#lastfive" class="btn btn-sm btn-success inline-block btnClick" id="lastfive" style="width: 20%">Les 5 derniers</a>
+			<a href="{{ path('addLivre') }}" class="btn btn-sm btn-success inline-block" title="Ajouter un livre"> + </a>
+		</div>
+		<div id="livreList" class="row d-flex flex-row justify-content-center">
+			{% for livre in livres %}
+				<div class="card mb-2 me-2 d-inline-block" style="width: 30%;">
 					<div class="card-body" data-id="{{ livre.id }}">
 						<h4 class="card-title">{{ livre.titre }}</h4>
 						<div class="card-text">
@@ -31,36 +26,27 @@
 								<ul>
 									{% for auteur in livre.auteur %}
 										<li>{{ auteur.nom }}
-											{{ auteur.prenom }},</li>
+											{{ auteur.prenom }}</li>
 									{% endfor %}
 								</ul>
 							</p>
 							<p>
-								resume : {{ livre.resume | myExerpt(100, '...') }}
+								resume :
+								{{ livre.resume | myExerpt(100, '---') }}
 							</p>
 							<p>
-								l'éditeur : {{ livre.editeur }}
+								editeur :
+								{{ livre.editeur }}
 							</p>
 							<p>
 								<span class="float-end">{{ livre.categorie.label }}</span>
-								date de parution : {{ livre.dateformatParu }}
+								date parution :
+								{{ livre.dateformatParu }}
 							</p>
 						</div>
 					</div>
 				</div>
-
-				{# <tr> #}
-					{# <td>{{ livre.auteur }}</td> #}
-					{# <td>{{ livre.editeur }}</td> #}
-					{# On cherche la propriéte de l'objet qui est lui meme une propriété #}
-					{# <td>{{ livre.categorie.label }}</td> #}
-					{# <td>{{ livre.resume | myExerpt(100, '___') }}</td> #}
-					{# <td>{{ livre.dateformatParu }}</td> #}
-					{# <td>{{ livre.dateParution | date("d/m/Y") }}</td> #}
-				{# </tr> #}
 			{% endfor %}
 		</div>
-		{# </tbody>
-														        </table> #}
 	</div>
 {% endblock %}

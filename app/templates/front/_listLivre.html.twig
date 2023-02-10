@@ -1,0 +1,30 @@
+{% for livre in livres %}
+	<div class="card mb-2 me-2 d-inline-block" style="width: 30%;">
+		<div class="card-body" data-id="{{ livre.id }}">
+			<h4 class="card-title">{{ livre.titre }}</h4>
+			<div class="card-text">
+				<p>auteur :
+					<ul>
+						{% for auteur in livre.auteur %}
+							<li>{{ auteur.nom }}
+								{{ auteur.prenom }}</li>
+						{% endfor %}
+					</ul>
+				</p>
+				<p>
+					resume :
+					{{ livre.resume | myExerpt(100, '---') }}
+				</p>
+				<p>
+					editeur :
+					{{ livre.editeur }}
+				</p>
+				<p>
+					<span class="float-end">{{ livre.categorie.label }}</span>
+					date parution :
+					{{ livre.dateformatParu }}
+				</p>
+			</div>
+		</div>
+	</div>
+{% endfor %}

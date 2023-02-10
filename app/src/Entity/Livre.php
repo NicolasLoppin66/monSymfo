@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
+#[UniqueEntity('titre', message: 'Ce livre existe déja !')]
 class Livre
 {
     #[ORM\Id]
@@ -16,6 +19,7 @@ class Livre
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Length(min: 4, minMessage: 'Vous devez mettre au minimum 4 caractère.', max: 200, maxMessage: 'Vous ete au-dela de la limite du titre.')]
     #[ORM\Column(length: 200)]
     private ?string $titre = null;
 
@@ -25,12 +29,12 @@ class Livre
     #[ORM\Column(type: Types::TEXT)]
     private ?string $resume = null;
 
+    #[Assert\Regex(pattern: '/\d/', match: false, message: "L'éditeur ne peut pas obtenir de nombre.")]
     #[ORM\Column(length: 150)]
     private string $editeur;
 
-
-
     #[ORM\ManyToMany(targetEntity: Auteur::class, inversedBy: 'livres')]
+    #[UniqueEntity(fields: ['nom', 'prenom'])]
     private Collection $auteur;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
@@ -58,8 +62,6 @@ class Livre
 
         return $this;
     }
-
-
 
     public function getDateParution(): ?\DateTimeInterface
     {
@@ -109,8 +111,6 @@ class Livre
         return $dateFormat;
     }
 
-
-
     /**
      * @return Collection<int, Auteur>
      */
@@ -146,8 +146,5 @@ class Livre
 
         return $this;
     }
-
-
-
 
 }

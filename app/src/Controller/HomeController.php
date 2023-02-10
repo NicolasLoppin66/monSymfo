@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class HomeController extends AbstractController
 {
@@ -162,9 +162,15 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/login', 'login')]
-    public function login()
+    #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
+    public function login(AuthenticationUtils $authenticationUtils)
     {
-        return $this->render('front/forms/login.html.twig', []);
+        $error = $authenticationUtils->getLastAuthenticationError(); // On retourne l'erreur d'anthentification
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('front/forms/login.html.twig', [
+            'lastUsername' => $lastUsername,
+            'error' => $error
+        ]);
     }
 }

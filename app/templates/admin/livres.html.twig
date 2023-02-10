@@ -1,0 +1,22 @@
+{% extends "baseAdmin.html.twig" %}
+
+{% block title %}
+    Liste livres
+{% endblock %}
+
+{% block titreInter %}
+	<span class="float-end">
+		<a href="{{ path('logout') }}" class="btn btn-sm btn-outline-warning">Exit</a>
+	</span>
+	Bienvenue dans l'interface admin
+{% endblock %}
+
+{% block menu %}
+	{{ include ("admin/_menu.html.twig", {currentPage: 'livres'}) }}
+{% endblock %}
+
+{% block body %}
+    <div id="livreList" class="row d-flex flex-row justify-content-center">
+    {{ include "front/_listLivre.html.twig", {livres : livres} }}
+    </div>
+{% endblock %}

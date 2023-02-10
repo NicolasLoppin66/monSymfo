@@ -1,0 +1,20 @@
+{% extends "baseAdmin.html.twig" %}
+
+{% block title %}
+    Liste categories
+{% endblock %}
+
+{% block titreInter %}
+	<span class="float-end">
+		<a href="{{ path('logout') }}" class="btn btn-sm btn-outline-warning">Exit</a>
+	</span>
+	Bienvenue dans l'interface admin
+{% endblock %}
+
+{% block menu %}
+	{{ include ("admin/_menu.html.twig", {currentPage: 'categories'}) }}
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}

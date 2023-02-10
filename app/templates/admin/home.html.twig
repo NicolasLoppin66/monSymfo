@@ -3,12 +3,18 @@
 	Accueil Admin
 {% endblock %}
 
+{% block titreInter %}
+	<span class="float-end">
+		<a href="{{ path('logout') }}" class="btn btn-sm btn-outline-warning">Exit</a>
+	</span>
+	Bienvenue dans l'interface admin
+{% endblock %}
+
+{% block menu %}
+	{% include ("admin/_menu.html.twig", {currentPage: 'livres'}) %}
+{% endblock %}
+
 {% block body %}
-	<div class="container">
-		<h2>Bienvenue dans l'interface admin</h2>
-		<div class="row">
-			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit impedit odio numquam quae iste optio at dignissimos officiis nostrum consectetur omnis repudiandae, qui eum quam, doloremque a dolorem voluptate quos?
-			</p>
-		</div>
-	</div>
+	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit impedit odio numquam quae iste optio at dignissimos officiis nostrum consectetur omnis repudiandae, qui eum quam, doloremque a dolorem voluptate quos?
+	</p>
 {% endblock %}

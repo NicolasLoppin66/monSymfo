@@ -1,0 +1,12 @@
+<ul>
+    {% for link in ['livre', 'auteur', 'categorie'] %}
+        {% if currentPage != num %}
+            <li class="list-unstyled mb-2">
+                <a href='{{ path('adminPage', { lien: link }) }}'
+                    class="btn btn-outline-primary btn-sm">
+                    Page {{ link }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
